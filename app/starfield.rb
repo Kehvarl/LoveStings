@@ -1,9 +1,40 @@
+class Star
+  attr_accessor :x, :y, :z, :sh, :r, :c, :mc
+  def initialize
+    @x = rand(1280)
+    @y = rand(720)
+    @z = rand(128)
+    @sh = rand(12) + 4
+    @r = rand(360)
+    @c = rand(15)
+    @mc = c
+  end
+
+  def calc
+    @c -= 1
+    if @c <= 0
+      @x -= 1
+      @c = @mc
+    end
+    if @x < 0
+      @x = rand(4) + 1276
+      @y = rand(720)
+      @sh = rand(12) + 4
+      @r = rand(360)
+      @c = rand(15)
+      @mc = @c
+    end
+  end
+
+  def render
+    [@x, @y, @sh, @sh, 'sprites/star.png', @r].sprites
+  end
+end
+
 class Starfield
   def initialize
     @stars = []
-    for s in 0..128
-      @stars << newstar
-    end
+    0..128.each { @stars << newstar }
   end
 
   def newstar
@@ -40,9 +71,7 @@ class Starfield
 
   def tick
     arr = []
-    @stars.each { |s|
-      arr << calcstar(s)
-    }
+    @stars.each { |s| arr << calcstar(s) }
     @stars = arr
   end
 
