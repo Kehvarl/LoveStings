@@ -72,7 +72,7 @@ class Starfield
     stars = 0
     @stars.each do |s|
       s.x += (@vx * s.z)
-      s.y += (@vy * s.z)
+      # s.y += (@vy * s.z)
       if s.x >= 0 and s.x <= 1280
         arr << s.render()
         stars += 1
