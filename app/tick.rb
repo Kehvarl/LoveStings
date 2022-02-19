@@ -4,7 +4,7 @@ def tick args
   args.state.ship_angle ||= 270
   tpath = false
 
-  args.state.jelly ||= Animated.new(x: 640, y: 420, w: 48, h: 48, path: 'sprites/jelly.png')
+  args.state.jelly ||= Animated.new(x: 640, y: 420, w: 64, h: 64, path: 'sprites/jelly.png')
 
   if args.inputs.mouse.click
     args.state.starfield.reverse()
@@ -25,6 +25,20 @@ def tick args
   elsif args.inputs.keyboard.down
     args.state.ship_y -= 1
     tpath = 'sprites/ThrustL.png'
+  end
+
+  if args.inputs.keyboard.key_down.space
+    args.state.jelly.animation = [2, 3, 4].sample()
+  end
+
+  if args.inputs.keyboard.key_down.plus
+    args.state.jelly.h += 8
+    args.state.jelly.w = args.state.jelly.h
+  end
+
+  if args.inputs.keyboard.key_down.hyphen
+    args.state.jelly.h = [(args.state.jelly.h - 4), 32].max
+    args.state.jelly.w = args.state.jelly.h
   end
 
 

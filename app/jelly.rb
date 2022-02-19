@@ -19,6 +19,7 @@ end
 ##
 # This class represents a multi-frame animated Sprite
 class Animated < Sprite
+  attr_accessor :animation
   def initialize opts
     super
     @animation = opts[:animation] || 3
