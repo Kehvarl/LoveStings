@@ -4,6 +4,8 @@ def tick args
   args.state.ship_angle ||= 270
   tpath = false
 
+  args.state.jelly ||= Animated.new(x: 640, y: 420, w: 48, h: 48, path: 'sprites/jelly.png')
+
   if args.inputs.mouse.click
     args.state.starfield.reverse()
     # args.state.ship_angle = (args.state.ship_angle + 180)%360
@@ -33,10 +35,12 @@ def tick args
   end
 
   args.state.starfield.tick()
+  args.state.jelly.tick()
 
   args.outputs.primitives << args.state.starfield.render()
   args.outputs.primitives << {x: 640, y: args.state.ship_y, w:48, h:48, path:'sprites/Ship.png', angle: args.state.ship_angle}.sprite!
   if tpath
     args.outputs.primitives << {x: 640, y: args.state.ship_y, w:48, h:48, path:tpath, angle: 270}.sprite!
   end
+  args.outputs.primitives << args.state.jelly
 end
