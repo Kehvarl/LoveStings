@@ -4,23 +4,14 @@ class Star
     if vy == 0
       @x = rand(1280)
     else
-      if vx > 0
+      if vx < 0
         @x = 1280
       else
         @x = 0
       end
     end
 
-    if @x >= 1270 or vy == 0
-      @y = rand(720)
-    else
-      if vy < 0
-        @y = 720
-      else
-        @y = 0
-      end
-
-    end
+    @y = rand(720)
     @z = rand(127) + 1
     @sh = rand(12) + 4
     @r = rand(360)
@@ -63,7 +54,7 @@ class Starfield
   end
 
   def tick
-    # @stars.each { |s| s.calc() }
+    @stars.each { |s| s.x += (@vx * s.z) }
   end
 
   def render
@@ -71,8 +62,7 @@ class Starfield
     arr << [0, 0, 1280, 720, 0, 0, 0].solids
     stars = 0
     @stars.each do |s|
-      s.x += (@vx * s.z)
-      # s.y += (@vy * s.z)
+
       if s.x >= 0 and s.x <= 1280
         arr << s.render()
         stars += 1
@@ -80,8 +70,7 @@ class Starfield
     end
     if stars < 128
       1..(128 - stars).each do
-        @stars << Star.new(@vx, 0)
-        @stars << Star.new(0, @vy)
+        @stars << Star.new(@vx, @vy)
       end
     end
     arr
