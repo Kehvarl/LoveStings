@@ -41,6 +41,7 @@ class Star
 end
 
 class Starfield
+  attr_accessor :vx
   def initialize
     @stars = []
     0..128.each { @stars << Star.new() }
