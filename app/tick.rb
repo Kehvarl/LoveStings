@@ -4,7 +4,7 @@ def tick args
   args.state.ship_angle ||= 270
   tpath = false
 
-  args.state.jelly ||= Animated.new(x: 640, y: 420, w: 64, h: 64, path: 'sprites/jelly.png')
+  args.state.jelly ||= SpriteSheet.new(x: 640, y: 420, w: 64, h: 64, path: 'sprites/jelly.png')
 
   if args.inputs.mouse.click
     args.state.starfield.reverse()

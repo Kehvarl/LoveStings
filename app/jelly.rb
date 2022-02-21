@@ -17,10 +17,10 @@ class Sprite
 end
 
 ##
-# This class represents a multi-frame animated Sprite
-class Animated < Sprite
+# This class represents a multi-frame animated Sprite based on a Sprite Sheet
+class SpriteSheet < Sprite
   attr_accessor :animation
-  def initialize opts
+  def initialize (opts)
     super
     @animation = opts[:animation] || 3
     @frame = opts[:frame] || 0

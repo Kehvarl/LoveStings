@@ -1,6 +1,6 @@
 class Star
   attr_accessor :x, :y, :z, :sh, :r, :c, :mc
-  def initialize vx=0, vy=0
+  def initialize (vx=0, vy=0)
     if vy == 0
       @x = rand(1280)
     else
