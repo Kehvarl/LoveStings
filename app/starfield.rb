@@ -44,7 +44,7 @@ class Starfield
   attr_accessor :vx
   def initialize
     @stars = []
-    0..128.each { @stars << Star.new() }
+    0..128.each { @stars << Star.new }
     @vx = -0.1
     @vy = -0.1
   end
@@ -65,7 +65,7 @@ class Starfield
     @stars.each do |s|
 
       if s.x >= 0 and s.x <= 1280
-        arr << s.render()
+        arr << s.render
         stars += 1
       end
     end
