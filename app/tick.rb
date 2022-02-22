@@ -2,7 +2,7 @@ def tick args
   args.state.starfield ||= Starfield.new()
   args.state.ship_y ||= 360
   args.state.ship_angle ||= 270
-  tpath = false
+  thrust_path = false
 
   args.state.jelly ||= SpriteSheet.new(x: 640, y: 420, w: 64, h: 64, path: 'sprites/jelly.png')
 
@@ -13,18 +13,18 @@ def tick args
 
   if args.inputs.keyboard.left
     args.state.starfield.vx += 0.01
-    tpath = 'sprites/ThrustB.png'
+    thrust_path = 'sprites/ThrustB.png'
   elsif args.inputs.keyboard.right
     args.state.starfield.vx -= 0.01
-    tpath = 'sprites/ThrustF.png'
+    thrust_path = 'sprites/ThrustF.png'
   end
 
   if args.inputs.keyboard.up
     args.state.ship_y += 1
-    tpath = 'sprites/ThrustR.png'
+    thrust_path = 'sprites/ThrustR.png'
   elsif args.inputs.keyboard.down
     args.state.ship_y -= 1
-    tpath = 'sprites/ThrustL.png'
+    thrust_path = 'sprites/ThrustL.png'
   end
 
   if args.inputs.keyboard.key_down.space
@@ -53,8 +53,8 @@ def tick args
 
   args.outputs.primitives << args.state.starfield.render()
   args.outputs.primitives << {x: 640, y: args.state.ship_y, w:48, h:48, path:'sprites/Ship.png', angle: args.state.ship_angle}.sprite!
-  if tpath
-    args.outputs.primitives << {x: 640, y: args.state.ship_y, w:48, h:48, path:tpath, angle: 270}.sprite!
+  if thrust_path
+    args.outputs.primitives << {x: 640, y: args.state.ship_y, w:48, h:48, path:thrust_path, angle: 270}.sprite!
   end
   args.outputs.primitives << args.state.jelly
 end
