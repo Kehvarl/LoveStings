@@ -39,6 +39,7 @@ class SpriteSheet < Sprite
     @flip_horizontally = opts[:flip_horizontally] || false
     @anim_delay = opts[:max_delay] || 10
     @max_delay = opts[:max_delay] || 10
+    @loop = opts[:loop] || true
     @path = opts[:path] || ['sprites/error.png']
   end
 
@@ -46,9 +47,59 @@ class SpriteSheet < Sprite
     @anim_delay -= 1
     if @anim_delay == 0
       @anim_delay = @max_delay
-      @frame = (@frame + 1) % @frame_count
+      if @loop
+        @frame = (@frame + 1) % @frame_count
+      else
+        @frame = [@frame + 1, @frame_count].min
+      end
     end
     @source_y = @animation * @source_h
     @source_x = @frame * @source_w
+  end
+end
+
+class Jelly < SpriteSheet
+  def initialize(opts)
+    super(opts)
+    @next = 'relaxed'
+    send(@next)
+  end
+
+  def relaxed
+    @animation = 4
+    @frame_count = 5
+    @loop = true
+    @next = 'agitated'
+  end
+
+  def next
+    send(@next)
+  end
+
+  def agitated
+    @animation = 3
+    @frame_count = 5
+    @loop = true
+    @next = 'angry'
+  end
+
+  def angry
+    @animation = 2
+    @frame_count = 5
+    @loop = true
+    @next = 'explode'
+  end
+
+  def explode
+    @animation = 1
+    @frame_count = 7
+    @loop = false
+    @next = 'relaxed'
+  end
+
+  def flatten
+    @animation = 0
+    @frame_count = 3
+    @loop = false
   end
 end
