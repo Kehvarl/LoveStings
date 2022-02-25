@@ -1,6 +1,6 @@
 Jelly dating sim.  Fly your ship to different planets, trade to get money and presents, use money and presents to date Jellies.
 
-Poll Results So Far:
+Name Poll Results So Far:
 ```
 1) Don't Be Jelly               (1)
 2) Sins With A Stellar Empire   (1)
