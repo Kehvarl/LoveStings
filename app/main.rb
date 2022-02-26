@@ -1,3 +1,5 @@
-require 'app/starfield.rb'
+require 'app/sprite.rb'
 require 'app/jelly.rb'
+require 'app/ship.rb'
+require 'app/starfield.rb'
 require 'app/tick.rb'

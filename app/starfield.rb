@@ -54,10 +54,6 @@ class Starfield
     @vy = -@vy
   end
 
-  def tick
-    @stars.each { |s| s.x += (@vx * s.z) }
-  end
-
   def render
     arr = []
     arr << [0, 0, 1280, 720, 0, 0, 0].solids
@@ -75,5 +71,19 @@ class Starfield
       end
     end
     arr
+  end
+
+  def tick args
+    if args.inputs.mouse.click
+      reverse
+    end
+
+    if args.inputs.keyboard.left
+      @vx += 0.01
+    elsif args.inputs.keyboard.right
+      @vx -= 0.01
+    end
+
+    @stars.each { |s| s.x += (@vx * s.z) }
   end
 end
