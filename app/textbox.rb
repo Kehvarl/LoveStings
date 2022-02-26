@@ -1,35 +1,46 @@
 class TextBox
-  attr_accessor :text, :speaker
+  attr_accessor :x, :y, :w, :h, :text, :speaker
   def initialize opts
     super()
+    @x = opts[:x] || 240
+    @y = opts[:y] || 0
+    @w = opts[:w] || 800
+    @h = opts[:h] || 110
     @text = opts[:text] || "..."
     @speaker = opts[:speaker] || false
   end
 
   def render args
     arr = []
-    arr << [240, 0, 800, 110, 64,  64,  64].borders
-    arr << [241, 1, 798, 108,  0, 128, 128].borders
-    arr << [242, 2, 796, 106,  0, 255, 255].borders
-    arr << [243, 3, 794, 104,  0, 128, 128].borders
-    arr << [244, 4, 792, 102, 64,  64,  64].borders
-    arr << [245, 5, 790, 100,  0,   0,   0].solids
+    if text
+      arr = render_box(args, arr)
+    end
     if speaker
       arr = render_speaker(args, arr)
     end
     arr
   end
 
+  def render_box args, arr
+    arr << [@x    , @y    , @w     , @h     , 64,  64,  64].borders
+    arr << [@x + 1, @y + 1, @w -  2, @h -  2,  0, 128, 128].borders
+    arr << [@x + 2, @y + 2, @w -  4, @h -  4,  0, 255, 255].borders
+    arr << [@x + 3, @y + 3, @w -  6, @h -  6,  0, 128, 128].borders
+    arr << [@x + 4, @y + 4, @w -  8, @h -  8, 64,  64,  64].borders
+    arr << [@x + 6, @y + 5, @w - 10, @h - 10,  0,   0,   0].solids
+    arr
+  end
+
   def render_speaker args, arr
     w, h = args.gtk.calcstringbox(@speaker, 2)
-
-    arr << [240, 110, w + 12, h, 64,  64,   64].borders
-    arr << [241, 109, w + 10, h, 0,  128,  128].borders
-    arr << [242, 108, w +  8, h, 0,  255,  255].borders
-    arr << [243, 107, w +  6, h, 0,  128,  128].borders
-    arr << [244, 106, w +  4, h, 0,   64,   64].borders
-    arr << [244, 104, w +  2, h, 0,    0,    0].solids
-    arr << {x:245,  y:106 + h, text: @speaker, size_enum: 2,
+    y = @y + @h
+    arr << [@x    , y    , w + 12, h, 64,  64,  64].borders
+    arr << [@x + 1, y - 1, w + 10, h,  0, 128, 128].borders
+    arr << [@x + 2, y - 2, w +  8, h,  0, 255, 255].borders
+    arr << [@x + 3, y - 3, w +  6, h,  0, 128, 128].borders
+    arr << [@x + 4, y - 4, w +  4, h, 64,  64,  64].borders
+    arr << [@x + 5, y - 5, w +  2, h, 0,    0,    0].solids
+    arr << {x:@x + 5,  y:y -4 + h, text: @speaker, size_enum: 2,
             r: 255, g: 255, b: 255}.label!
     arr.concat render_text(args)
   end
@@ -39,7 +50,7 @@ class TextBox
     max_character_length = 67
     long_strings_split = args.string.wrapped_lines @text, max_character_length
     arr << long_strings_split.map_with_index do |s, i|
-      { x: 245, y: 90 - (i * 25), size_enum: 2, text: s,
+      { x: @x + 5, y: @h - 20 - (i * 25), size_enum: 2, text: s,
         r: 255, g: 255, b: 255,
         alignment_enum: 0, vertical_alignment_enum: 1}.label!
     end
