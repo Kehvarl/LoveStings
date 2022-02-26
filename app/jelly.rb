@@ -12,7 +12,7 @@ class Jelly < SpriteSheet
     @next = 'agitated'
   end
 
-  def next
+  def next_mood
     send(@next)
   end
 
@@ -44,8 +44,9 @@ class Jelly < SpriteSheet
   end
 
   def tick args
+    super()
     if args.inputs.keyboard.key_down.space
-      next
+      next_mood()
     end
 
     if args.inputs.keyboard.key_down.plus
