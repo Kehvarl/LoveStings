@@ -1,8 +1,25 @@
 class Jelly < SpriteSheet
   def initialize(opts)
     super(opts)
+    @portrait_w = opts[:source_w] || 32
+    @portrait_h = opts[:source_h] || 32
+    @portrait_x = opts[:source_x] || 0
+    @portrait_y = opts[:source_y] || 128
     @next = 'relaxed'
     send(@next)
+  end
+
+  def render_portrait (x, y, w, h)
+    {x: x,
+     y: y,
+     w: w,
+     h: h,
+     source_x: @portrait_x,
+     source_y: @portrait_y,
+     source_w: @portrait_w,
+     source_h: @portrait_h,
+     path: @path
+    }.sprite!
   end
 
   def relaxed
