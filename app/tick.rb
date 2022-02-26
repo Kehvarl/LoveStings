@@ -17,6 +17,7 @@ def tick args
 
   if args.inputs.keyboard.key_down.space
     args.state.textbox.speaker = ['Player', 'Jelly', 'Space Pirate Captain'].sample
+    args.state.textbox.text = [long_string, "The quick brown fox jumped over the lazy dog", "...", "And that's that!"].sample
   end
 
   args.outputs.primitives << args.state.starfield.render
@@ -24,5 +25,6 @@ def tick args
   args.outputs.primitives << args.state.ship
   args.outputs.primitives << args.state.ship.render
   args.outputs.primitives << args.state.textbox.render(args)
+  args.outputs.primitives << args.state.jelly.render_portrait(140, 45, 128, 128)
 
 end
