@@ -1,7 +1,7 @@
 devid=kehvarl
 devtitle=Kehvarl
-gameid=spaceshooter
-gametitle=Space Shooter
+gameid=sensualsquish
+gametitle=Sensual Squish
 version=0.1
 icon=metadata/icon.png
 

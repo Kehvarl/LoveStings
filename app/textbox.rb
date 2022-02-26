@@ -6,6 +6,9 @@ class TextBox
     @y = opts[:y] || 0
     @w = opts[:w] || 800
     @h = opts[:h] || 110
+    @r = opts[:r] || 64
+    @g = opts[:g] || 255
+    @b = opts[:b] || 255
     @text = opts[:text] || "..."
     @speaker = opts[:speaker] || false
   end
@@ -22,24 +25,24 @@ class TextBox
   end
 
   def render_box args, arr
-    arr << [@x    , @y    , @w     , @h     , 64,  64,  64].borders
-    arr << [@x + 1, @y + 1, @w -  2, @h -  2,  0, 128, 128].borders
-    arr << [@x + 2, @y + 2, @w -  4, @h -  4,  0, 255, 255].borders
-    arr << [@x + 3, @y + 3, @w -  6, @h -  6,  0, 128, 128].borders
-    arr << [@x + 4, @y + 4, @w -  8, @h -  8, 64,  64,  64].borders
-    arr << [@x + 6, @y + 5, @w - 10, @h - 10,  0,   0,   0].solids
+    arr << [@x    , @y    , @w     , @h     , @r/4, @g/4, @b/4].borders
+    arr << [@x + 1, @y + 1, @w -  2, @h -  2, @r/2, @g/2, @b/2].borders
+    arr << [@x + 2, @y + 2, @w -  4, @h -  4, @r  , @g  , @b  ].borders
+    arr << [@x + 3, @y + 3, @w -  6, @h -  6, @r/2, @g/2, @b/2].borders
+    arr << [@x + 4, @y + 4, @w -  8, @h -  8, @r/4, @g/4, @b/4].borders
+    arr << [@x + 6, @y + 5, @w - 10, @h - 10,    0,    0,    0].solids
     arr
   end
 
   def render_speaker args, arr
     w, h = args.gtk.calcstringbox(@speaker, 2)
     y = @y + @h
-    arr << [@x    , y    , w + 12, h, 64,  64,  64].borders
-    arr << [@x + 1, y - 1, w + 10, h,  0, 128, 128].borders
-    arr << [@x + 2, y - 2, w +  8, h,  0, 255, 255].borders
-    arr << [@x + 3, y - 3, w +  6, h,  0, 128, 128].borders
-    arr << [@x + 4, y - 4, w +  4, h, 64,  64,  64].borders
-    arr << [@x + 5, y - 5, w +  2, h, 0,    0,    0].solids
+    arr << [@x    , y    , w + 12, h, @r/4, @g/4, @b/4].borders
+    arr << [@x + 1, y - 1, w + 10, h, @r/2, @g/2, @b/2].borders
+    arr << [@x + 2, y - 2, w +  8, h, @r  , @g  , @b  ].borders
+    arr << [@x + 3, y - 3, w +  6, h, @r/2, @g/2, @b/2].borders
+    arr << [@x + 4, y - 4, w +  4, h, @r/4, @g/4, @b/4].borders
+    arr << [@x + 5, y - 5, w +  2, h, 0   , 0   , 0   ].solids
     arr << {x:@x + 5,  y:y -4 + h, text: @speaker, size_enum: 2,
             r: 255, g: 255, b: 255}.label!
     arr.concat render_text(args)
