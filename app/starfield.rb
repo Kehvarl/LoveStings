@@ -74,15 +74,7 @@ class Starfield
   end
 
   def tick args
-    if args.inputs.mouse.click
-      reverse
-    end
-
-    if args.inputs.keyboard.left
-      @vx += 0.01
-    elsif args.inputs.keyboard.right
-      @vx -= 0.01
-    end
+    @vx = args.state.ship.vx
 
     @stars.each { |s| s.x += (@vx * s.z) }
   end
