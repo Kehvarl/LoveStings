@@ -16,6 +16,9 @@
 * The WingThing
   * Professional Wing Person
   * Guaranteed affection booster or your money back
+* Jelly Goth
+  * Wednesday Addams
+  * Except a Jellyfish
 
 ##Problems
 * Space Pirate Captain
