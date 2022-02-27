@@ -1,7 +1,8 @@
 class Ship < SpriteSheet
+  attr_accessor :vx
   def initialize(opts)
     super(opts)
-    @thrust_path = false
+    @vx = -0.1
   end
 
   def thrust_none
@@ -36,16 +37,37 @@ class Ship < SpriteSheet
 
   def tick args
     super()
+    if args.inputs.mouse.click
+      @vx = -@vx
+    end
     if args.inputs.keyboard.up
       @y += 1
-      thrust_right
+      if @vx < 0
+        thrust_right
+      else
+        thrust_left
+      end
     elsif args.inputs.keyboard.down
       @y -= 1
-      thrust_left
+      if @vx < 0
+        thrust_left
+      else
+        thrust_right
+      end
     elsif args.inputs.keyboard.left
-      thrust_back
+      @vx += 0.01
+      if @vx < 0
+        thrust_back
+      else
+        thrust_forward
+      end
     elsif args.inputs.keyboard.right
-      thrust_forward
+      @vx -= 0.01
+      if @vx < 0
+        thrust_forward
+      else
+        thrust_back
+      end
     else
       thrust_none
     end
