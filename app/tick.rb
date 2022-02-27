@@ -1,4 +1,13 @@
 def tick args
+  dodger_tick args
+end
+
+def dodger_tick args
+  args.state.dodger ||= Minigame_Dodger.new()
+  args.state.dodger.tick(args)
+end
+
+def tech_tick args
   args.state.starfield ||= Starfield.new()
   args.state.jelly ||= Jelly.new(x: 640, y: 420, w: 64, h: 64, path: 'sprites/jelly.png')
   args.state.ship ||= Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
