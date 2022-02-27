@@ -4,26 +4,50 @@ class Ship < SpriteSheet
     @thrust_path = false
   end
 
-  def render
-    arr = []
-    if @thrust_path
-      arr << {x: @x, y: @y, w:@w, h:@h, path:@thrust_path, angle: 270}.sprite!
-    end
+  def thrust_none
+    @animation = 4
+    @frame_count = 4
+    @loop = true
+  end
+
+  def thrust_forward
+    @animation = 3
+    @frame_count = 4
+    @loop = true
+  end
+
+  def thrust_back
+    @animation = 2
+    @frame_count = 4
+    @loop = true
+  end
+
+  def thrust_left
+    @animation = 1
+    @frame_count = 4
+    @loop = true
+  end
+
+  def thrust_right
+    @animation = 0
+    @frame_count = 4
+    @loop = true
   end
 
   def tick args
+    super()
     if args.inputs.keyboard.up
       @y += 1
-      @thrust_path = 'sprites/ThrustR.png'
+      thrust_right
     elsif args.inputs.keyboard.down
       @y -= 1
-      @thrust_path = 'sprites/ThrustL.png'
+      thrust_left
     elsif args.inputs.keyboard.left
-      @thrust_path = 'sprites/ThrustB.png'
+      thrust_back
     elsif args.inputs.keyboard.right
-      @thrust_path = 'sprites/ThrustF.png'
+      thrust_forward
     else
-      @thrust_path = false
+      thrust_none
     end
   end
 end
