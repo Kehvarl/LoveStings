@@ -1,7 +1,16 @@
 def tick args
+  dodger_tick args
+end
+
+def dodger_tick args
+  args.state.dodger ||= Minigame_Dodger.new()
+  args.state.dodger.tick(args)
+end
+
+def tech_tick args
   args.state.starfield ||= Starfield.new()
   args.state.jelly ||= Jelly.new(x: 640, y: 420, w: 64, h: 64, path: 'sprites/jelly.png')
-  args.state.ship ||= Ship.new(x: 640, y: 360, w: 48, h: 48, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
+  args.state.ship ||= Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
   long_string = "Lorem ipsum dolor sit amet, consectetur adipiscing elitteger dolor velit, ultricies vitae libero vel, aliquam imperdiet enim."
   args.state.textbox ||= TextBox.new(text: long_string + long_string, speaker: "Player")
 
@@ -24,6 +33,6 @@ def tick args
   args.outputs.primitives << args.state.jelly
   args.outputs.primitives << args.state.ship
   args.outputs.primitives << args.state.textbox.render(args)
-  args.outputs.primitives << args.state.jelly.render_portrait(140, 45, 128, 128)
+  # args.outputs.primitives << args.state.jelly.render_portrait(140, 45, 128, 128)
 
 end

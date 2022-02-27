@@ -42,28 +42,28 @@ class Ship < SpriteSheet
     end
     if args.inputs.keyboard.up
       @y += 1
-      if @vx < 0
+      if @vx <= 0
         thrust_right
       else
         thrust_left
       end
     elsif args.inputs.keyboard.down
       @y -= 1
-      if @vx < 0
+      if @vx <= 0
         thrust_left
       else
         thrust_right
       end
     elsif args.inputs.keyboard.left
       @vx += 0.01
-      if @vx < 0
+      if @vx <= 0
         thrust_back
       else
         thrust_forward
       end
     elsif args.inputs.keyboard.right
       @vx -= 0.01
-      if @vx < 0
+      if @vx <= 0
         thrust_forward
       else
         thrust_back

@@ -9,7 +9,13 @@ class Sprite
                 :tile_x, :tile_y, :tile_w, :tile_h,
                 :flip_horizontally, :flip_vertically,
                 :angle_x, :angle_y,
-                :angle_anchor_x, :angle_anchor_y, :blendmode_enum
+                :angle_anchor_x, :angle_anchor_y, :blendmode_enum,
+                :rect
+
+  def initialize opts
+    super(opts)
+    @rect = [@x, @y, @w, @h]
+  end
 
   def primitive_marker
     :sprite
@@ -41,6 +47,7 @@ class SpriteSheet < Sprite
     @max_delay = opts[:max_delay] || 10
     @loop = opts[:loop] || true
     @path = opts[:path] || ['sprites/error.png']
+    @rect = [@x, @y, @w, @h]
   end
 
   def tick
