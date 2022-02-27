@@ -1,8 +1,9 @@
 class Ship < SpriteSheet
-  attr_accessor :vx
+  attr_accessor :vx, :reversed
   def initialize(opts)
     super(opts)
     @vx = -0.1
+    @reversed = false
   end
 
   def thrust_none
@@ -42,31 +43,31 @@ class Ship < SpriteSheet
     end
     if args.inputs.keyboard.up
       @y += 1
-      if @vx <= 0
-        thrust_right
-      else
+      if @reversed
         thrust_left
+      else
+        thrust_right
       end
     elsif args.inputs.keyboard.down
       @y -= 1
-      if @vx <= 0
-        thrust_left
-      else
+      if @reversed
         thrust_right
+      else
+        thrust_left
       end
     elsif args.inputs.keyboard.left
       @vx += 0.01
-      if @vx <= 0
-        thrust_back
-      else
+      if @reversed
         thrust_forward
+      else
+        thrust_back
       end
     elsif args.inputs.keyboard.right
       @vx -= 0.01
-      if @vx <= 0
-        thrust_forward
-      else
+      if @reversed
         thrust_back
+      else
+        thrust_forward
       end
     else
       thrust_none

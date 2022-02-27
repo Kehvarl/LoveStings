@@ -9,12 +9,10 @@ class Sprite
                 :tile_x, :tile_y, :tile_w, :tile_h,
                 :flip_horizontally, :flip_vertically,
                 :angle_x, :angle_y,
-                :angle_anchor_x, :angle_anchor_y, :blendmode_enum,
-                :rect
+                :angle_anchor_x, :angle_anchor_y, :blendmode_enum
 
-  def initialize opts
-    super(opts)
-    @rect = [@x, @y, @w, @h]
+  def rect
+    [@x, @y, @w, @h]
   end
 
   def primitive_marker
@@ -47,7 +45,6 @@ class SpriteSheet < Sprite
     @max_delay = opts[:max_delay] || 10
     @loop = opts[:loop] || true
     @path = opts[:path] || ['sprites/error.png']
-    @rect = [@x, @y, @w, @h]
   end
 
   def tick
@@ -65,3 +62,31 @@ class SpriteSheet < Sprite
   end
 end
 
+##
+# This class represents a multi-frame animated Sprite based on a Sprite Sheet
+class RotatingSprite < Sprite
+  def initialize(opts)
+    super
+    @x = opts[:x] || 0
+    @y = opts[:y] || 0
+    @w = opts[:w] || 32
+    @h = opts[:h] || 32
+    @r = opts[:r] || 255
+    @g = opts[:g] || 255
+    @b = opts[:b] || 255
+    @angle = 0
+    @flip_horizontally = opts[:flip_horizontally] || false
+    @rotation = opts[:rotation] || 1
+    @max_delay = opts[:max_delay] || 10
+    @rotate_delay = @max_delay
+    @path = opts[:path] || ['sprites/error.png']
+  end
+
+  def tick
+    @rotate_delay -= 1
+    if @rotate_delay == 0
+      @rotate_delay = @max_delay
+      @angle = (@angle + @rotation) % 360
+    end
+  end
+end
