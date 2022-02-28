@@ -42,9 +42,10 @@ class Minigame_Dodger
   end
 
   def new_enemy
+    s = [16, 32, 64].sample
     e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(688),
-                            w: [16, 32, 64].sample,
-                            h: [16, 32, 64].sample, angle: rand(360),
+                            w: s,
+                            h: s, angle: rand(360),
                             rotation: [-6, -4, -2, -1, 1, 2, 3, 4, 6].sample,
                             vx: [0.25, 0.5, 1].sample,
                             max_delay: rand(5) + 5,
@@ -64,10 +65,12 @@ class Minigame_Dodger
     arr = []
     @enemies.each do |e|
       e.x -= e.vx
-      e.tick()
-      arr << e
+      if e.x + [e.w, e.h].max > 0
+        e.tick()
+        arr << e
+      end
     end
-    arr
+    @enemies = arr
   end
 
   def tick args
@@ -77,11 +80,18 @@ class Minigame_Dodger
       @next_enemy = 60
     end
     @ship.tick(args)
-    @enemies = enemy_tick
+    enemy_tick
 
     args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid!
     args.outputs.primitives << @ship
     args.outputs.primitives << @enemies.map { |e|  e}
+    args.outputs.primitives << @enemies.map do |e|
+      r = e.rect
+      if r.rect.intersect_rect?(@ship.rect)
+        {x:r[0], y:r[1], w:r[2], h:r[3], r:128, g:0, b:0, angle: e.angle}.border!
+      end
+
+    end
     #args.outputs.primitives << @background.map { |g|  g}
 
     #@background = ground_tick
