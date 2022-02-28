@@ -42,7 +42,9 @@ class Minigame_Dodger
   end
 
   def new_enemy
-    e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(688), w: 64, h: 64, angle: rand(360),
+    e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(688),
+                            w: [16, 32, 64].sample,
+                            h: [16, 32, 64].sample, angle: rand(360),
                             rotation: [-6, -4, -2, -1, 1, 2, 3, 4, 6].sample,
                             vx: [0.25, 0.5, 1].sample,
                             max_delay: rand(5) + 5,
