@@ -3,11 +3,43 @@ class Minigame_Dodger
     @lives = 3
     @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
     @enemies = []
+    @background = []
     while @enemies.length < 5
       new_enemy
     end
-    @ship.angle = 270
+    ground
   end
+
+  def ground
+    h = 64
+    w = 4
+    0.step(1290, w) do |x|
+      h = [[(h + (rand(32) - 16)), 4].max, 256].min
+      @background << {x:x, y:0, w:w, h:h, r:128, g:128, b:128}.solid!
+    end
+  end
+
+  def ground_tick
+    arr = []
+    last_x = 0
+    h = 64
+    w = 4
+    @background.each do |g|
+      w = g[:w]
+      h = g[:h]
+      g[:x] -= 1
+      if g[:x] + g[:w] > 0
+        arr << g
+        last_x = [last_x, g[:x]].max
+      end
+    end
+    last_x.step(1290, w) do |x|
+      h = [[(h + (rand(32) - 16)), 4].max, 256].min
+      arr << {x:x, y:0, w:w, h:h, r:128, g:128, b:128}.solid!
+    end
+    @background = arr
+  end
+
 
   def new_enemy
     e =  RotatingSprite.new(x: rand(64) + (1280 - 128), y: rand(688), w: 64, h: 64, angle: rand(360),
@@ -25,7 +57,6 @@ class Minigame_Dodger
     end
   end
 
-
   def tick args
     if args.inputs.keyboard.key_down.space
       new_enemy
@@ -33,8 +64,11 @@ class Minigame_Dodger
     @ship.tick(args)
     @enemies.each { |e| e.tick() }
 
-    args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid
+    args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid!
     args.outputs.primitives << @ship
     args.outputs.primitives << @enemies.map { |e|  e}
+    args.outputs.primitives << @background.map { |g|  g}
+
+    @background = ground_tick
   end
 end

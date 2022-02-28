@@ -33,6 +33,7 @@ class SpriteSheet < Sprite
     @y = opts[:y] || 0
     @w = opts[:w] || 32
     @h = opts[:h] || 32
+    @angle = opts[:angle] || 0
     @source_w = opts[:source_w] || 32
     @source_h = opts[:source_h] || 32
     @source_x = opts[:source_x] || 0
