@@ -4,6 +4,7 @@ class Minigame_Dodger
     @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
     @enemies = []
     @background = []
+    @next_enemy = 60
     while @enemies.length < 5
       new_enemy
     end
@@ -40,10 +41,13 @@ class Minigame_Dodger
     @background = arr
   end
 
-
   def new_enemy
-    e =  RotatingSprite.new(x: rand(64) + (1280 - 128), y: rand(688), w: 64, h: 64, angle: rand(360),
+    s = [16, 32, 64].sample
+    e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(688),
+                            w: s,
+                            h: s, angle: rand(360),
                             rotation: [-6, -4, -2, -1, 1, 2, 3, 4, 6].sample,
+                            vx: [0.25, 0.5, 1].sample,
                             max_delay: rand(5) + 5,
                             path: 'sprites/meteor.png')
     valid = true
@@ -57,18 +61,39 @@ class Minigame_Dodger
     end
   end
 
+  def enemy_tick
+    arr = []
+    @enemies.each do |e|
+      e.x -= e.vx
+      if e.x + [e.w, e.h].max > 0
+        e.tick()
+        arr << e
+      end
+    end
+    @enemies = arr
+  end
+
   def tick args
-    if args.inputs.keyboard.key_down.space
+    @next_enemy -= 1
+    if @next_enemy == 0
       new_enemy
+      @next_enemy = 60
     end
     @ship.tick(args)
-    @enemies.each { |e| e.tick() }
+    enemy_tick
 
     args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid!
     args.outputs.primitives << @ship
     args.outputs.primitives << @enemies.map { |e|  e}
-    args.outputs.primitives << @background.map { |g|  g}
+    args.outputs.primitives << @enemies.map do |e|
+      r = e.rect
+      if r.rect.intersect_rect?(@ship.rect)
+        {x:r[0], y:r[1], w:r[2], h:r[3], r:128, g:0, b:0, angle: e.angle}.border!
+      end
 
-    @background = ground_tick
+    end
+    #args.outputs.primitives << @background.map { |g|  g}
+
+    #@background = ground_tick
   end
 end
