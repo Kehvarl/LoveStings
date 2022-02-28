@@ -66,6 +66,7 @@ end
 ##
 # This class represents a multi-frame animated Sprite based on a Sprite Sheet
 class RotatingSprite < Sprite
+  attr_accessor :vx, :vy
   def initialize(opts)
     super
     @x = opts[:x] || 0
@@ -76,6 +77,8 @@ class RotatingSprite < Sprite
     @g = opts[:g] || 255
     @b = opts[:b] || 255
     @angle = 0
+    @vx = opts[:vx] || 0
+    @vy = opts[:vy] || 0
     @flip_horizontally = opts[:flip_horizontally] || false
     @rotation = opts[:rotation] || 1
     @max_delay = opts[:max_delay] || 10
