@@ -12,10 +12,10 @@ class Minigame_Dodger
 
   def ground
     h = 64
-    w = 4
+    w = 1
     0.step(1290, w) do |x|
-      h = [[(h + (rand(32) - 16)), 4].max, 256].min
-      @background << {x:x, y:0, w:w, h:h, r:128, g:128, b:128}.solid!
+      h = [[(h + [-1,1].sample), 32].max, 256].min
+      @background << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
     end
   end
 
@@ -23,7 +23,7 @@ class Minigame_Dodger
     arr = []
     last_x = 0
     h = 64
-    w = 4
+    w = 1
     @background.each do |g|
       w = g[:w]
       h = g[:h]
@@ -34,8 +34,8 @@ class Minigame_Dodger
       end
     end
     last_x.step(1290, w) do |x|
-      h = [[(h + (rand(32) - 16)), 4].max, 256].min
-      arr << {x:x, y:0, w:w, h:h, r:128, g:128, b:128}.solid!
+      h = [[(h + [-1,1].sample), 32].max, 256].min
+      arr << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
     end
     @background = arr
   end
