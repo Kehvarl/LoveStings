@@ -4,6 +4,7 @@ class Minigame_Dodger
     @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
     @enemies = []
     @background = []
+    @effects = []
     @next_enemy = 60
     while @enemies.length < 5
       new_enemy
@@ -79,19 +80,32 @@ class Minigame_Dodger
       new_enemy
       @next_enemy = 60
     end
-    @ship.tick(args)
+    if @ship.exists
+      @ship.tick(args)
+    end
     enemy_tick
+    @effects.map{ |e| e.tick}
+    @effects = @effects.select{ |e| !e.completed}
+    if @effects.length == 0
+      @ship.exists = true
+    end
 
     args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid!
-    args.outputs.primitives << @ship
+    if @ship.exists
+      args.outputs.primitives << @ship
+    end
     args.outputs.primitives << @enemies.map { |e|  e}
+
     args.outputs.primitives << @enemies.map do |e|
       r = e.rect
-      if r.rect.intersect_rect?(@ship.rect)
+      if @ship.exists and r.intersect_rect?(@ship.rect)
+        @effects << Explosion.new(x: @ship.x, y: @ship.y)
+        @ship.exists = false
+        @ship.vx = @ship.vy = 0
         {x:r[0], y:r[1], w:r[2], h:r[3], r:128, g:0, b:0, angle: e.angle}.border!
       end
-
     end
+    args.outputs.primitives << @effects.map { |e|  e}
     #args.outputs.primitives << @background.map { |g|  g}
 
     #@background = ground_tick
