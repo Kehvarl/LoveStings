@@ -1,10 +1,11 @@
 class Ship < SpriteSheet
-  attr_accessor :vx, :vy, :reversed
+  attr_accessor :vx, :vy, :reversed, :exists
   def initialize(opts)
     super(opts)
     @vx = 0.0
     @vy = 0.0
     @reversed = false
+    @exists = true
   end
 
   def thrust_none
@@ -79,6 +80,39 @@ class Ship < SpriteSheet
       end
     else
       thrust_none
+    end
+  end
+end
+
+class Explosion < Sprite
+  attr_accessor :completed
+  def initialize opts
+    super(opts)
+    @path = opts[:path] || 'sprites/explosion.png'
+    @x = opts[:x] || 0
+    @y = opts[:y] || 0
+    @h = opts[:h] ||32
+    @w = opts[:w] ||32
+    @delta = 1
+    @max_size = opts[:max_size] ||64
+    @max_delay = opts[:max_delay] || 2
+    @anim_delay = @max_delay
+    @completed = false
+  end
+
+  def tick
+    @anim_delay -= 1
+    if @anim_delay <= 0
+      @anim_delay = @max_delay
+      @h = (@w += @delta)
+      @x -= @delta/2
+      @y -= @delta/2
+      if @h >= @max_size
+        @delta = -(@delta.abs)
+      end
+      if @h <= 0
+        @completed = true
+      end
     end
   end
 end
