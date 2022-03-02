@@ -1,8 +1,12 @@
+class Toast < RotatingSprite
+
+end
 class Minigame_Dodger
   def initialize
     @lives = 3
     @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
     @enemies = []
+    @toast = []
     @background = []
     @effects = []
     @next_enemy = 60
@@ -42,6 +46,42 @@ class Minigame_Dodger
     @background = arr
   end
 
+  def new_toast
+    s = [16, 32].sample
+    t = RotatingSprite.new(x: rand(64) + 1280, y: rand(720) - s,
+                           w: s, h: s, angle: rand(360),
+                           rotation: 3,
+                           vx: rand(10)/10,
+                           max_delay: rand(5) + 5,
+                           path: 'sprites/toast.png')
+    valid = true
+    @enemies.each do |old|
+      if old.rect.intersect_rect?(t.rect)
+        valid = false
+      end
+    end
+    @toast.each do |old|
+      if old.rect.intersect_rect?(t.rect)
+        valid = false
+      end
+    end
+    if valid
+      @toast << t
+    end
+  end
+
+  def toast_tick
+    arr = []
+    @toast.each do |t|
+      t.x -= t.vx
+      if t.x + [t.w, t.h].max > 0
+        t.tick()
+        arr << t
+      end
+    end
+    @toast = arr
+  end
+
   def new_enemy
     s = [16, 32, 64].sample
     e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(688),
@@ -78,12 +118,14 @@ class Minigame_Dodger
     @next_enemy -= 1
     if @next_enemy == 0
       new_enemy
+      new_toast
       @next_enemy = 60
     end
     if @ship.exists
       @ship.tick(args)
     end
     enemy_tick
+    toast_tick
     @effects.map{ |e| e.tick}
     @effects = @effects.select{ |e| !e.completed}
     if @effects.length == 0
@@ -95,6 +137,8 @@ class Minigame_Dodger
       args.outputs.primitives << @ship
     end
     args.outputs.primitives << @enemies.map { |e|  e}
+    args.outputs.primitives << @toast.map { |t|  t}
+
 
     args.outputs.primitives << @enemies.map do |e|
       r = e.rect
