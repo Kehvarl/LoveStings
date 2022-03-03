@@ -66,7 +66,7 @@ end
 ##
 # This class represents a multi-frame animated Sprite based on a Sprite Sheet
 class RotatingSprite < Sprite
-  attr_accessor :vx, :vy
+  attr_accessor :vx, :vy, :exists
   def initialize(opts)
     super
     @x = opts[:x] || 0
@@ -84,6 +84,7 @@ class RotatingSprite < Sprite
     @max_delay = opts[:max_delay] || 10
     @rotate_delay = @max_delay
     @path = opts[:path] || ['sprites/error.png']
+    @exists = true
   end
 
   def tick
