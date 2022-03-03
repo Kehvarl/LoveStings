@@ -1,6 +1,3 @@
-class Toast < RotatingSprite
-
-end
 class Minigame_Dodger
   def initialize
     @lives = 3
@@ -117,6 +114,9 @@ class Minigame_Dodger
   end
 
   def tick args
+    if @lives <= 0
+      return
+    end
     @next_enemy -= 1
     if @next_enemy == 0
       new_enemy
