@@ -1,6 +1,6 @@
 devid=kehvarl
 devtitle=Kehvarl
-gameid=sensualsquish
+gameid=sensual-squish
 gametitle=Sensual Squish
 version=0.1
 icon=metadata/icon.png

@@ -1,10 +1,7 @@
-class Toast < RotatingSprite
-
-end
 class Minigame_Dodger
   def initialize
     @lives = 3
-    @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/Ship/ship_1-Sheet.png')
+    @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/ship/ship_1-Sheet.png')
     @enemies = []
     @toast = []
     @background = []
@@ -117,6 +114,9 @@ class Minigame_Dodger
   end
 
   def tick args
+    if @lives <= 0
+      return
+    end
     @next_enemy -= 1
     if @next_enemy == 0
       new_enemy
