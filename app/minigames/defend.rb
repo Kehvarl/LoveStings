@@ -111,7 +111,27 @@ class Minigame_Defend
     @enemies = arr
   end
 
-  def tick args
+  def draw_header
+    arr = []
+    arr << {x: 100, y: 689, w: 20, h: 20, path: 'sprites/toast.png'}.sprite!
+    arr << {x: 120, y: 710,
+            text: ": #{@score.to_s.rjust(3, '0')}",
+            size_enum: 2,
+            r:0, g:255, b:0}.label!
+    arr << {x: 1050, y: 683, w: 32, h: 32, path: 'sprites/Ship.png'}.sprite!
+    arr << {x: 1080, y: 710,
+            text: ": #{@lives}",
+            size_enum: 2,
+            r:0, g:255, b:0}.label!
+    arr << {x: 0, y: 675, x2: 190, y2: 675, r: 0, g: 128, b: 0}.line!
+    arr << {x: 190, y: 675, x2: 210, y2: 715, r: 0, g: 128, b: 0}.line!
+    arr << {x: 210, y: 715, x2: 1010, y2: 715, r: 0, g: 128, b: 0}.line!
+    arr << {x: 1010, y: 715, x2: 1030, y2: 675, r: 0, g: 128, b: 0}.line!
+    arr << {x: 1030, y: 675, x2: 1280, y2: 675, r: 0, g: 128, b: 0}.line!
+    arr
+  end
+
+  def tick_calulations args
     if @lives <= 0
       return
     end
@@ -133,7 +153,11 @@ class Minigame_Defend
     if @effects.length == 0
       @ship.exists = true
     end
+    @background = ground_tick
+  end
 
+  def tick args
+    tick_calulations args
     args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid!
     if @ship.exists
       args.outputs.primitives << @ship
@@ -164,25 +188,8 @@ class Minigame_Defend
     @toast = @toast.select { |t| t.exists}
 
     args.outputs.primitives << @effects.map { |e|  e}
-
-    args.outputs.primitives << {x: 100, y: 689, w: 20, h: 20, path: 'sprites/toast.png'}.sprite!
-    args.outputs.primitives << {x: 120, y: 710,
-                                text: ": #{@score.to_s.rjust(3, '0')}",
-                                size_enum: 2,
-                                r:0, g:255, b:0}.label!
-    args.outputs.primitives << {x: 1050, y: 683, w: 32, h: 32, path: 'sprites/Ship.png'}.sprite!
-    args.outputs.primitives << {x: 1080, y: 710,
-                                text: ": #{@lives}",
-                                size_enum: 2,
-                                r:0, g:255, b:0}.label!
-    args.outputs.primitives << {x: 0, y: 675, x2: 190, y2: 675, r: 0, g: 128, b: 0}.line!
-    args.outputs.primitives << {x: 190, y: 675, x2: 210, y2: 715, r: 0, g: 128, b: 0}.line!
-    args.outputs.primitives << {x: 210, y: 715, x2: 1010, y2: 715, r: 0, g: 128, b: 0}.line!
-    args.outputs.primitives << {x: 1010, y: 715, x2: 1030, y2: 675, r: 0, g: 128, b: 0}.line!
-    args.outputs.primitives << {x: 1030, y: 675, x2: 1280, y2: 675, r: 0, g: 128, b: 0}.line!
     args.outputs.primitives << @background.map { |g|  g}
-
-    @background = ground_tick
+    args.outputs.primitives << draw_header
   end
 end
 
