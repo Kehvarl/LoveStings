@@ -1,10 +1,15 @@
 def tick args
-  dodger_tick args
+  defend_tick args
 end
 
 def dodger_tick args
   args.state.dodger ||= Minigame_Dodger.new()
   args.state.dodger.tick(args)
+end
+
+def defend_tick args
+  args.state.defend ||= Minigame_Defend.new()
+  args.state.defend.tick(args)
 end
 
 def tech_tick args
