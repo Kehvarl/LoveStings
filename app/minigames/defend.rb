@@ -6,12 +6,9 @@ class Minigame_Defend
     @toast = []
     @background = []
     @effects = []
-    @next_enemy = 60
+    @next_enemy = 120
     @lives = 3
     @score = 0
-    while @enemies.length < 5
-      new_enemy
-    end
     ground
   end
 
@@ -82,8 +79,9 @@ class Minigame_Defend
   end
 
   def new_enemy
+    min_y = (@background[-1][:h] || 10) + 10
     s = [16, 32, 64].sample
-    e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(670 -s -s) + s,
+    e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(670 - min_y -s) + min_y,
                             w: s,
                             h: s, angle: rand(360),
                             rotation: [-6, -4, -2, -1, 1, 2, 3, 4, 6].sample,
@@ -118,12 +116,12 @@ class Minigame_Defend
       return
     end
     @next_enemy -= 1
-    if @next_enemy == 0
+    if @next_enemy <= 0
       new_enemy
       if rand(10) >= 7
         new_toast
       end
-      @next_enemy = 60
+      @next_enemy = rand(120) + 60
     end
     if @ship.exists
       @ship.tick(args)

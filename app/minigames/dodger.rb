@@ -4,7 +4,6 @@ class Minigame_Dodger
     @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/ship/ship_1-Sheet.png')
     @enemies = []
     @toast = []
-    @background = []
     @effects = []
     @next_enemy = 60
     @lives = 3
@@ -13,36 +12,6 @@ class Minigame_Dodger
       new_enemy
     end
     ground
-  end
-
-  def ground
-    h = 64
-    w = 1
-    0.step(1290, w) do |x|
-      h = [[(h + [-1,1].sample), 32].max, 256].min
-      @background << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
-    end
-  end
-
-  def ground_tick
-    arr = []
-    last_x = 0
-    h = 64
-    w = 1
-    @background.each do |g|
-      w = g[:w]
-      h = g[:h]
-      g[:x] -= 1
-      if g[:x] + g[:w] > 0
-        arr << g
-        last_x = [last_x, g[:x]].max
-      end
-    end
-    last_x.step(1290, w) do |x|
-      h = [[(h + [-1,1].sample), 32].max, 256].min
-      arr << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
-    end
-    @background = arr
   end
 
   def new_toast
@@ -182,8 +151,5 @@ class Minigame_Dodger
     args.outputs.primitives << {x: 210, y: 715, x2: 1010, y2: 715, r: 0, g: 128, b: 0}.line!
     args.outputs.primitives << {x: 1010, y: 715, x2: 1030, y2: 675, r: 0, g: 128, b: 0}.line!
     args.outputs.primitives << {x: 1030, y: 675, x2: 1280, y2: 675, r: 0, g: 128, b: 0}.line!
-    #args.outputs.primitives << @background.map { |g|  g}
-
-    #@background = ground_tick
   end
 end
