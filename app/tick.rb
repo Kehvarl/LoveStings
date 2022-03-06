@@ -1,6 +1,12 @@
 def tick args
   #defend_tick args
-  dodger_tick args
+  # dodger_tick args
+  ground_tick args
+end
+
+def ground_tick args
+  args.state.gt ||= Ground_Generate.new()
+  args.state.gt.tick(args)
 end
 
 def dodger_tick args
