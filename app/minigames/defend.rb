@@ -1,14 +1,7 @@
-class Minigame_Defend
+class Minigame_Defend < Minigame
   def initialize
-    @lives = 3
-    @ship = Ship.new(x: 640, y: 360, w: 32, h: 32, angle: 270, path: 'sprites/ship/ship_1-Sheet.png')
-    @enemies = []
-    @toast = []
+    super
     @background = []
-    @effects = []
-    @next_enemy = 120
-    @lives = 3
-    @score = 0
     ground
   end
 
@@ -56,26 +49,26 @@ class Minigame_Defend
         valid = false
       end
     end
-    @toast.each do |old|
+    @collectables.each do |old|
       if old.rect.intersect_rect?(t.rect)
         valid = false
       end
     end
     if valid
-      @toast << t
+      @collectables << t
     end
   end
 
   def toast_tick
     arr = []
-    @toast.each do |t|
+    @collectables.each do |t|
       t.x -= t.vx
       if t.x + [t.w, t.h].max > 0
         t.tick()
         arr << t
       end
     end
-    @toast = arr
+    @collectables = arr
   end
 
   def new_enemy
@@ -111,27 +104,7 @@ class Minigame_Defend
     @enemies = arr
   end
 
-  def draw_header
-    arr = []
-    arr << {x: 100, y: 689, w: 20, h: 20, path: 'sprites/toast.png'}.sprite!
-    arr << {x: 120, y: 710,
-            text: ": #{@score.to_s.rjust(3, '0')}",
-            size_enum: 2,
-            r:0, g:255, b:0}.label!
-    arr << {x: 1050, y: 683, w: 32, h: 32, path: 'sprites/Ship.png'}.sprite!
-    arr << {x: 1080, y: 710,
-            text: ": #{@lives}",
-            size_enum: 2,
-            r:0, g:255, b:0}.label!
-    arr << {x: 0, y: 675, x2: 190, y2: 675, r: 0, g: 128, b: 0}.line!
-    arr << {x: 190, y: 675, x2: 210, y2: 715, r: 0, g: 128, b: 0}.line!
-    arr << {x: 210, y: 715, x2: 1010, y2: 715, r: 0, g: 128, b: 0}.line!
-    arr << {x: 1010, y: 715, x2: 1030, y2: 675, r: 0, g: 128, b: 0}.line!
-    arr << {x: 1030, y: 675, x2: 1280, y2: 675, r: 0, g: 128, b: 0}.line!
-    arr
-  end
-
-  def tick_calulations args
+  def tick_calculations args
     if @lives <= 0
       return
     end
@@ -157,14 +130,11 @@ class Minigame_Defend
   end
 
   def tick args
-    tick_calulations args
-    args.outputs.primitives << {x: 0, y: 0, w: 1280, h: 720, r: 0, g: 0, b: 0}.solid!
-    if @ship.exists
-      args.outputs.primitives << @ship
-    end
-    args.outputs.primitives << @enemies.map { |e|  e}
-    args.outputs.primitives << @toast.map { |t|  t}
+    super
+    tick_calculations args
 
+    args.outputs.primitives << @enemies.map { |e|  e}
+    args.outputs.primitives << @collectables.map { |t|  t}
 
     args.outputs.primitives << @enemies.map do |e|
       r = e.rect
@@ -177,7 +147,7 @@ class Minigame_Defend
       end
     end
 
-    args.outputs.primitives << @toast.map do |e|
+    args.outputs.primitives << @collectables.map do |e|
       r = e.rect
       if @ship.exists and r.intersect_rect?(@ship.rect)
         @score += 100
@@ -185,7 +155,7 @@ class Minigame_Defend
         {x:r[0], y:r[1], w:r[2], h:r[3], r:0, g:128, b:0, angle: e.angle}.border!
       end
     end
-    @toast = @toast.select { |t| t.exists}
+    @collectables = @collectables.select { |t| t.exists}
 
     args.outputs.primitives << @effects.map { |e|  e}
     args.outputs.primitives << @background.map { |g|  g}

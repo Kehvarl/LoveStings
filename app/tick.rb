@@ -1,5 +1,6 @@
 def tick args
-  defend_tick args
+  #defend_tick args
+  dodger_tick args
 end
 
 def dodger_tick args
