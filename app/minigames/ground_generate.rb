@@ -44,7 +44,6 @@ class Ground_Generate
     if args.inputs.keyboard.key_down.left
       @vx -= 1
     end
-    # @x += @vx
     args.outputs.primitives << @ground.map do |g|
       g[:x] = (g[:x] - @vx) % 2560
       g

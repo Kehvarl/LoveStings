@@ -1,7 +1,7 @@
 class Minigame_Defend < Minigame
   def initialize
     super
-    @background = []
+    @ground = []
     ground
   end
 
@@ -10,7 +10,7 @@ class Minigame_Defend < Minigame
     w = 1
     0.step(1290, w) do |x|
       h = [[(h + [-1,1].sample), 32].max, 256].min
-      @background << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
+      @ground << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
     end
   end
 
@@ -19,7 +19,7 @@ class Minigame_Defend < Minigame
     last_x = 0
     h = 64
     w = 1
-    @background.each do |g|
+    @ground.each do |g|
       w = g[:w]
       h = g[:h]
       g[:x] -= 1
@@ -32,7 +32,7 @@ class Minigame_Defend < Minigame
       h = [[(h + [-1,1].sample), 32].max, 256].min
       arr << {x:x, y:10, w:w, h:h, r:128, g:128, b:128}.solid!
     end
-    @background = arr
+    @ground = arr
   end
 
   def new_toast
@@ -72,7 +72,7 @@ class Minigame_Defend < Minigame
   end
 
   def new_enemy
-    min_y = (@background[-1][:h] || 10) + 10
+    min_y = (@ground[-1][:h] || 10) + 10
     s = [16, 32, 64].sample
     e =  RotatingSprite.new(x: rand(64) + 1280, y: rand(670 - min_y -s) + min_y,
                             w: s,
@@ -126,7 +126,7 @@ class Minigame_Defend < Minigame
     if @effects.length == 0
       @ship.exists = true
     end
-    @background = ground_tick
+    @ground = ground_tick
   end
 
   def tick args
@@ -158,7 +158,7 @@ class Minigame_Defend < Minigame
     @collectables = @collectables.select { |t| t.exists}
 
     args.outputs.primitives << @effects.map { |e|  e}
-    args.outputs.primitives << @background.map { |g|  g}
+    args.outputs.primitives << @ground.map { |g|  g}
     args.outputs.primitives << draw_header
   end
 end
