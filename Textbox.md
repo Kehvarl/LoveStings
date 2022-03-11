@@ -15,6 +15,6 @@ def tick args
 end
 ```
 
-![Textbox Example](app/metadata/Text1.png?raw=true "Sample Text")
+![Textbox Example](metadata/Text1.png?raw=true "Sample Text")
 
-![Textbox Example 2](app/metadata/Text2.png?raw=true "Sample Text")
+![Textbox Example 2](metadata/Text2.png?raw=true "Sample Text")
