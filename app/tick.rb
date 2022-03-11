@@ -1,7 +1,8 @@
 def tick args
   #defend_tick args
   # dodger_tick args
-  ground_tick args
+  # ground_tick args
+  tech_tick args
 end
 
 def ground_tick args
