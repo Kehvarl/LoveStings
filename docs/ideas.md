@@ -22,6 +22,8 @@ Resource-gathering
   * Lunar Lander
 * Mine asteroids
   * Asteroids
+* Defender Clone
+  * Defender
 * Games give you status with various jellies
 * Games earn resource to buy presents and pay for dates
 * Paramour Status
