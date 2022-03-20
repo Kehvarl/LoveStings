@@ -17,8 +17,12 @@
   * Professional Wing Person
   * Guaranteed affection booster or your money back
 * Jelly Goth
-  * Wednesday Addams
+  * Morticia Addams
   * Except a Jellyfish
+* JellOwl
+  * Jellyfish
+  * But with owl feathers
+  * Probably won't talk to you because you're strange.
 
 ##Problems
 * Space Pirate Captain
