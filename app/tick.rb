@@ -46,6 +46,4 @@ def tech_tick args
   args.outputs.primitives << args.state.jelly
   args.outputs.primitives << args.state.ship
   args.outputs.primitives << args.state.textbox.render(args)
-  # args.outputs.primitives << args.state.jelly.render_portrait(140, 45, 128, 128)
-
 end
